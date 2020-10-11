@@ -3,8 +3,8 @@ import os
 from getkey import getkey 
 
 class DeathCounter():
-    def __init__(self):
-        self.deaths = 0
+    def __init__(self, x):
+        self.deaths = x
 
     def IncreaseDeath(self):
         self.deaths += 1
@@ -63,11 +63,20 @@ def DeathCount(death,DEATH_NAME):
             print ("Invalid Input! Please Try Again!")
 
 if __name__ == "__main__":
-    death0 = DeathCounter()
+    file = open("deaths.txt","r")
+    for line in file:
+        words = line.split(' ')
+
+    filesize = os.path.getsize("deaths.txt")
+        
+    if filesize == 0:
+        x = 0
+    else: 
+        x = words[-2]
+        x = int(x)
+
+    death0 = DeathCounter(x)
 
     DEATH_NAME = input("How do you want to show death counter? Example: Death Count, Deaths, etc. : ")
 
     DeathCount(death0.deaths,DEATH_NAME)
-
-
-
