@@ -1,82 +1,87 @@
-import sys
-import os
-from getkey import getkey 
+import os 
+import keyboard
 
+#################################
 class DeathCounter():
-    def __init__(self, x):
-        self.deaths = x
+    def __init__(self,x):
+        self.deaths = x 
 
     def IncreaseDeath(self):
         self.deaths += 1
         return self.deaths
 
+    def DecreaseDeath(self):
+        if self.deaths > 0:
+            self.deaths -= 1
+            return self.deaths
+        else:
+            self.deaths = 0
+            return self.deaths
+    
     def ResetDeath(self):
         self.deaths = 0
         return self.deaths
-
-    def DecreaseDeath(self):
-        if self.deaths > 0:
-            self.deaths -=  1
-            return self.deaths
-        else: 
-            self.deaths = 0
-            return self.deaths 
-    
-    def PrintDeath(self):
-        print(f"Death Count: {self.deaths}")
+#################################
 
 def DeathCount(death,DEATH_NAME):
 
-    # d = open ("deaths.txt","w")
-
-    while True:
-        os.system('cls' if os.name == 'nt' else 'clear')
-        print ("####################")
-        print (f"  {DEATH_NAME}: {death} ")
-        print ("####################")
-        print ("    * + : increase *      ")
-        print ("    * - : decrease *      ")
-        print ("    * r : reset    *      ")
-        print ("    * q : quit     *      ")
-        print ("####################")
-        print(">>")
-        choice = getkey()
+    def increment_death_count():
+        death = death0.IncreaseDeath()
+        d = open("deaths.txt", "w")
+        d.write(f"{DEATH_NAME} : {death} ")
+        d.close()
         
-        if choice == "+":
-            death = death0.IncreaseDeath()
-            d = open ("deaths.txt","w")
-            d.write(f"{DEATH_NAME} : {death} ")
-            d.close()
-        elif choice.lower() == "-":
-            death = death0.DecreaseDeath()
-            d = open ("deaths.txt","w")
-            d.write(f"{DEATH_NAME} : {death} ")
-            d.close()
-        elif choice.lower() == "r":
-            death = death0.ResetDeath()
-            d = open ("deaths.txt","w")
-            d.write(f"{DEATH_NAME} : {death} ")
-            d.close()
-        elif choice.lower() == "q":
-            sys.exit()
-        else: 
-            print ("Invalid Input! Please Try Again!")
+    #Function to decrement death count
+    def decrement_death_count():
+        death = death0.DecreaseDeath()
+        d = open("deaths.txt", "w")
+        d.write(f"{DEATH_NAME} : {death} ")
+        d.close()
+        
+    #Function to reset death count
+    def reset_death_count():
+        death = death0.ResetDeath()
+        d = open("deaths.txt", "w")
+        d.write(f"{DEATH_NAME} : {death} ")
+        d.close()
+    
+    def quit_program():
+        keyboard.unhook_all()
+        os._exit(os.X_OK)
+    
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print ("####################")
+    print (f"  {DEATH_NAME}: {death} ")
+    print ("####################")
+    print ("    * + : increase *      ")
+    print ("    * - : decrease *      ")
+    print ("    * r : reset    *      ")
+    print ("    * q : quit     *      ")
+    print ("####################")
+    print(">>")
 
+    keyboard.add_hotkey("+",increment_death_count)
+    keyboard.add_hotkey("-",decrement_death_count)
+    keyboard.add_hotkey("r",reset_death_count)
+    keyboard.add_hotkey("q",quit_program)
+    keyboard.wait() 
+   
 if __name__ == "__main__":
     file = open("deaths.txt","r")
     for line in file:
         words = line.split(' ')
-
-    filesize = os.path.getsize("deaths.txt")
         
+    filesize = os.path.getsize("deaths.txt")
+
     if filesize == 0:
         x = 0
-    else: 
+        DEATH_NAME = input("How do you want the death counter? Ex: Death Count, Deaths, etc : ")
+    else:
         x = words[-2]
         x = int(x)
+        DEATH_NAME = words[0]
 
     death0 = DeathCounter(x)
-
-    DEATH_NAME = input("How do you want to show death counter? Example: Death Count, Deaths, etc. : ")
-
+    
     DeathCount(death0.deaths,DEATH_NAME)
+
