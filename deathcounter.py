@@ -1,5 +1,6 @@
 import os 
 import keyboard
+#from playsound import playsound
 
 #################################
 class DeathCounter():
@@ -30,7 +31,8 @@ def DeathCount(death,DEATH_NAME):
         d = open("deaths.txt", "w")
         d.write(f"{DEATH_NAME} : {death} ")
         d.close()
-        
+        #playsound("death.mp3")
+
     #Function to decrement death count
     def decrement_death_count():
         death = death0.DecreaseDeath()
@@ -50,20 +52,20 @@ def DeathCount(death,DEATH_NAME):
         os._exit(os.X_OK)
     
     os.system('cls' if os.name == 'nt' else 'clear')
+   # print ("####################")
+    #print (f"  {DEATH_NAME}: {death} ")
     print ("####################")
-    print (f"  {DEATH_NAME}: {death} ")
-    print ("####################")
-    print ("    * + : increase *      ")
-    print ("    * - : decrease *      ")
-    print ("    * r : reset    *      ")
-    print ("    * q : quit     *      ")
+    print ("    | + : increase |      ")
+    print ("    | - : decrease |      ")
+    print ("    | f10 : reset  |      ")
+    print ("    | f12 : quit   |      ")
     print ("####################")
     print(">>")
 
     keyboard.add_hotkey("+",increment_death_count)
     keyboard.add_hotkey("-",decrement_death_count)
-    keyboard.add_hotkey("r",reset_death_count)
-    keyboard.add_hotkey("q",quit_program)
+    keyboard.add_hotkey("F10",reset_death_count)
+    keyboard.add_hotkey("F12",quit_program)
     keyboard.wait() 
    
 if __name__ == "__main__":
@@ -84,4 +86,3 @@ if __name__ == "__main__":
     death0 = DeathCounter(x)
     
     DeathCount(death0.deaths,DEATH_NAME)
-
